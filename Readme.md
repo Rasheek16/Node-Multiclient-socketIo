@@ -13,13 +13,13 @@ A simple multiclient chat application built using Node.js and Socket.io. Users a
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/node-multiclient-chat-app.git
+   git clone https://github.com/Rasheek16/Node-Multiclient-socketIo.git
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd node-multiclient-chat-app
+   cd Node-Multiclient-socketIo
    ```
 
 3. Install dependencies:
