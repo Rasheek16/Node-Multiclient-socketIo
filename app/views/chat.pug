@@ -1,0 +1,49 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Chat App
+    script(src='socket.io/socket.io.js')
+  body 
+    div(style="width:500px; text-align:right;")
+      a(href="/logout") Logout
+    div#msgs(style="height:400px; width:400px; overflow: scroll; float:left;")
+    div#users(style="height:400px; width:100px; overflow: scroll;")
+
+    form#chatForm(action="")
+      label(for="msg") #{user}:
+      input#name(type="hidden", value=user) 
+      input#msg(type="text")
+      button#sendBtn Send
+
+      script.
+        const socket = io.connect('http://localhost:8080');
+        const name = document.querySelector('#name').value;
+
+        socket.on('connect', () => {
+          socket.emit('join', { name });
+        });
+
+        document.querySelector('#sendBtn').addEventListener('click', (clickEvent) => {
+          clickEvent.preventDefault();
+          const msg = document.querySelector('#msg').value;
+
+          socket.emit('msg', { name, msg });
+          document.querySelector("#msg").value = '';
+        });
+
+        socket.on('msg', (data) => {
+          const msgEl = document.createElement('div');
+          msgEl.innerText = `${data.name}: ${data.msg}`;
+          document.querySelector('#msgs').appendChild(msgEl);
+        });
+
+        socket.on('join', (data) => {
+          document.querySelector('#users').innerHTML = '';
+          data.names.forEach((name) => {
+            const userEl = document.createElement('div');
+            userEl.innerText = name;
+            document.querySelector('#users').appendChild(userEl);
+          });
+        });
